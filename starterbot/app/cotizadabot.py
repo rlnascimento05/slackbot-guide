@@ -19,9 +19,7 @@ class CotizadaBot:
         """
         for event in slack_events:
             if event["type"] == "message" and not "subtype" in event:
-                print event
                 user_id, message = self.parse_direct_mention(event["text"])
-                print message
                 if user_id == self.id:
                     return message, event["channel"]
         return None, None
@@ -47,8 +45,10 @@ class CotizadaBot:
         # This is where you start to implement more commands!
         if command.startswith('feeder'):
           command, reference_date = command.split(" ")
-          response = getFeederProcessStatus(reference_date)
+          status = getFeederProcessStatus(reference_date)
+          for key, feeder_status in status.items():
+            print feeder_status
+            response = str(feeder_status)
+            sendMessage(response, channel)
         else:
-          response = default_response
-
-        sendMessage(response, channel)
+          sendMessage(default_response, channel)

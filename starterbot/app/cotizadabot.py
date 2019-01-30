@@ -1,0 +1,54 @@
+import os
+import time
+import re
+import logging
+from feeder import *
+from helper import *
+
+MENTION_REGEX = "^<@(|[WU].+?)>(.*)"
+
+class CotizadaBot:
+    def __init__(self, bot_id):
+      self.id = bot_id
+
+    def parse_bot_commands(self, slack_events):
+        """
+            Parses a list of events coming from the Slack RTM API to find bot commands.
+            If a bot command is found, this function returns a tuple of command and channel.
+            If its not found, then this function returns None, None.
+        """
+        for event in slack_events:
+            if event["type"] == "message" and not "subtype" in event:
+                print event
+                user_id, message = self.parse_direct_mention(event["text"])
+                print message
+                if user_id == self.id:
+                    return message, event["channel"]
+        return None, None
+
+    def parse_direct_mention(self, message_text):
+        """
+            Finds a direct mention (a mention that is at the beginning) in message text
+            and returns the user ID which was mentioned. If there is no direct mention, returns None
+        """
+        matches = re.search(MENTION_REGEX, message_text)
+        # the first group contains the username, the second group contains the remaining message
+        return (matches.group(1), matches.group(2).strip()) if matches else (None, None)
+
+    def handle_command(self, command, channel):
+        """
+            Executes bot command if the command is known
+        """
+        # Default response is help text for the user
+        default_response = "I'm sorry dave, i'm afraid i can't do that"
+
+        # Finds and executes the given command, filling in response
+        response = None
+        # This is where you start to implement more commands!
+        if command.startswith('feeder'):
+          command, reference_date = command.split(" ")
+          response = getFeederProcessStatus(reference_date)
+        else:
+          response = default_response
+
+        sendMessage(response, channel)

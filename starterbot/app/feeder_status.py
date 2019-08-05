@@ -1,4 +1,4 @@
-class FeederStatus:
+class SystemStatus:
   def __init__(self, origin, interface, status = 'missing', error = 'missing'):
     self.origin = origin
     self.interface = interface

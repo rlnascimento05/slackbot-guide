@@ -4,7 +4,7 @@ import time
 import logging
 sys.path.append("app")
 from slackclient import SlackClient
-import cotizadabot
+from app.cotizadabot import CotizadaBot as mybot
 
 # constants
 RTM_READ_DELAY = 1 # 1 second delay between reading from RTM
@@ -20,7 +20,7 @@ if __name__ == "__main__":
     # Read bot's user ID by calling Web API method `auth.test`
     starterbot_id = slack_client.api_call("auth.test")["user_id"]
 
-    bot = cotizadabot.CotizadaBot(starterbot_id)
+    bot = mybot(starterbot_id)
     while True:
       command, channel = bot.parse_bot_commands(slack_client.rtm_read())
       if command:

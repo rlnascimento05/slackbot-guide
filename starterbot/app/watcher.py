@@ -1,25 +1,22 @@
 import json
-import urllib
+import requests
 from helper import *
 import system_status
 FEEDER_PROCESS_URL="http://172.16.13.61:6100/feeder_processes"
 
-def watch:
-  systems = SYSTEMS_TO_WATCH()
+def watch():
   statuses = []
-  for url in systems:
-    statuses.append(getCurrentStatus(url))
+  for url in SYSTEMS_TO_WATCH:
+    status = system_status.SystemStatus(url,getCurrentStatus(url))
+    statuses.append(status)
 
   return statuses
 
 def getCurrentStatus(url):
-  response = urllib.urlopen(url)
-  data = json.loads(response.read())
+  response = requests.head(url)
+  return response.status_code
 
-  return data
-
-def SYSTEMS_TO_WATCH():
-  return [
-    'fund-clients-service-qa.aws.guideinvestimentos.com.br:7005/service_status',
-    'fund-data-service-qa.aws.guideinvestimentos.com.br:7000/service_status'
+SYSTEMS_TO_WATCH = [
+    'http://fund-clients-service-qa.aws.guideinvestimentos.com.br:7005/service_status',
+    'http://fund-data-service-qa.aws.guideinvestimentos.com.br:7000/service_status'
   ]

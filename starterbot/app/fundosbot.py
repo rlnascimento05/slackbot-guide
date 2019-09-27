@@ -38,16 +38,16 @@ class FundosBot:
             Executes bot command if the command is known
         """
         # Default response is help text for the user
-        default_response = "Não... que isso cara que loucura..."
-        print command
+        default_response = "Nao... que isso cara que loucura..."
 
         # Finds and executes the given command, filling in response
         response = None
         # This is where you start to implement more commands!
-        if command.startswith('Status Report'):
+        if command.startswith('status-report'):
+          sendMessage('Wait a bit...', channel)
           statuses = watch()
-          for status in status:
-            print feeder_status
+          for status in statuses:
+            print status
             response = str(status)
             sendMessage(response, channel)
         else:

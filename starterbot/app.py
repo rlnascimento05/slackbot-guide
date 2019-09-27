@@ -25,8 +25,6 @@ if __name__ == "__main__":
     while True:
       command, channel = bot.parse_bot_commands(slack_client.rtm_read())
       if command:
-        print command
-        print channel
         bot.handle_command(command, channel)
         time.sleep(RTM_READ_DELAY)
   else:

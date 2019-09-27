@@ -5,14 +5,15 @@ import os
 import time
 import logging
 sys.path.append("app")
-
 # constants
 RTM_READ_DELAY = 1  # 1 second delay between reading from RTM
 logging.basicConfig()
 # instantiate Slack client
 starterbot_id = None
+slack_token = os.environ.get('SLACK_BOT_TOKEN')
 # starterbot's user ID in Slack: value is assigned after the bot starts up
-slack_client = SlackClient(os.environ.get('SLACK_BOT_TOKEN'))
+print slack_token
+slack_client = SlackClient(token=slack_token)
 
 if __name__ == "__main__":
     if slack_client.rtm_connect(with_team_state=False):

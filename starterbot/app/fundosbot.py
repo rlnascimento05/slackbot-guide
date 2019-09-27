@@ -7,9 +7,10 @@ from helper import *
 
 MENTION_REGEX = "^<@(|[WU].+?)>(.*)"
 
+
 class FundosBot:
     def __init__(self, bot_id):
-      self.id = bot_id
+        self.id = bot_id
 
     def parse_bot_commands(self, slack_events):
         """
@@ -30,8 +31,10 @@ class FundosBot:
             and returns the user ID which was mentioned. If there is no direct mention, returns None
         """
         matches = re.search(MENTION_REGEX, message_text)
-        # the first group contains the username, the second group contains the remaining message
-        return (matches.group(1), matches.group(2).strip()) if matches else (None, None)
+        # the first group contains the username, the second group contains the
+        # remaining message
+        return (matches.group(1), matches.group(
+            2).strip()) if matches else (None, None)
 
     def handle_command(self, command, channel):
         """
@@ -44,11 +47,11 @@ class FundosBot:
         response = None
         # This is where you start to implement more commands!
         if command.startswith('status-report'):
-          sendMessage('Wait a bit...', channel)
-          statuses = watch()
-          for status in statuses:
-            print status
-            response = str(status)
-            sendMessage(response, channel)
+            sendMessage('Wait a bit...', channel)
+            statuses = watch()
+            for status in statuses:
+                print status
+                response = str(status)
+                sendMessage(response, channel)
         else:
-          sendMessage(default_response, channel)
+            sendMessage(default_response, channel)

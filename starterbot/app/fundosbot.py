@@ -2,12 +2,12 @@ import os
 import time
 import re
 import logging
-from feeder import *
+from watcher import *
 from helper import *
 
 MENTION_REGEX = "^<@(|[WU].+?)>(.*)"
 
-class CotizadaBot:
+class FundosBot:
     def __init__(self, bot_id):
       self.id = bot_id
 
@@ -38,17 +38,17 @@ class CotizadaBot:
             Executes bot command if the command is known
         """
         # Default response is help text for the user
-        default_response = "I'm sorry dave, i'm afraid i can't do that"
+        default_response = "Não... que isso cara que loucura..."
+        print command
 
         # Finds and executes the given command, filling in response
         response = None
         # This is where you start to implement more commands!
-        if command.startswith('feeder'):
-          command, reference_date = command.split(" ")
-          status = getFeederProcessStatus(reference_date)
-          for key, feeder_status in status.items():
+        if command.startswith('Status Report'):
+          statuses = watch()
+          for status in status:
             print feeder_status
-            response = str(feeder_status)
+            response = str(status)
             sendMessage(response, channel)
         else:
           sendMessage(default_response, channel)
